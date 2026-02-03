@@ -40,6 +40,12 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
+import { motion } from 'framer-motion';
+
+// ... (imports remain the same, just adding motion)
+// Note: I cannot see the imports in the replacement chunk, assuming I need to add it or it's already there if I replace the whole file. 
+// Actually I should replace the component implementation to wrap it in motion.div
+
 export default function SpendingChart({ 
   title, 
   data, 
@@ -65,7 +71,12 @@ export default function SpendingChart({
   };
 
   return (
-    <div className="w-full bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-2xl p-6 shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="w-full bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-2xl p-6 shadow-2xl overflow-hidden"
+    >
       {/* Header */}
       <div className="flex justify-between items-start mb-6">
         <div>
@@ -76,15 +87,20 @@ export default function SpendingChart({
           </p>
         </div>
         {showTotal && (
-          <div className="text-right bg-gray-900/50 p-3 rounded-xl border border-gray-700/50">
+          <motion.div 
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-right bg-gray-900/50 p-3 rounded-xl border border-gray-700/50"
+          >
             <p className="text-xs text-gray-400 uppercase tracking-wider">Total</p>
             <p className="text-xl font-bold text-emerald-400">{formatCurrency(total)}</p>
-          </div>
+          </motion.div>
         )}
       </div>
 
       {/* Chart Area */}
-      <div style={{ height }} className="w-full">
+      <div style={{ height }} className="w-full relative min-h-[300px]">
         <ResponsiveContainer width="100%" height="100%">
           {type === 'bar' ? (
             <BarChart data={data}>
@@ -107,7 +123,7 @@ export default function SpendingChart({
               <Bar 
                 dataKey="value" 
                 radius={[4, 4, 0, 0]}
-                animationDuration={1000}
+                isAnimationActive={false}
               >
                 {data.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color || '#10B981'} />
@@ -139,7 +155,7 @@ export default function SpendingChart({
                 strokeWidth={3}
                 dot={{ r: 4, fill: '#3B82F6', strokeWidth: 2, stroke: '#1F2937' }}
                 activeDot={{ r: 8, fill: '#60A5FA' }}
-                animationDuration={1000}
+                isAnimationActive={false}
               />
             </LineChart>
           ) : (
@@ -152,7 +168,7 @@ export default function SpendingChart({
                 outerRadius={100}
                 paddingAngle={5}
                 dataKey="value"
-                animationDuration={1000}
+                isAnimationActive={false}
               >
                 {data.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color || '#10B981'} stroke="rgba(0,0,0,0)" />
@@ -181,6 +197,6 @@ export default function SpendingChart({
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }

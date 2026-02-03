@@ -34,6 +34,10 @@ const getCategoryStyle = (category: string) => {
   return styles[category] || 'bg-gray-700 text-gray-400';
 };
 
+import { motion } from 'framer-motion';
+
+// ... (previous imports)
+
 export default function TransactionList({ 
   transactions, 
   title = "Recent Transactions",
@@ -49,7 +53,12 @@ export default function TransactionList({
   const hasMore = displayCount < sortedTransactions.length;
 
   return (
-    <div className="w-full bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden shadow-lg animate-in fade-in duration-500">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="w-full bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden shadow-lg"
+    >
       <div className="px-6 py-5 border-b border-gray-800 flex justify-between items-center bg-gray-900">
         <div className="flex items-center gap-3">
           <div className="bg-gray-800 p-2 rounded-lg">
@@ -57,17 +66,18 @@ export default function TransactionList({
           </div>
           <h2 className="text-lg font-bold text-white">{title}</h2>
         </div>
-        <span className="text-xs text-gray-500 font-mono bg-gray-950 px-2 py-1 rounded">
+        <span className="text-xs text-gray-500 font-mono bg-gray-950 px-2 py-1 rounded border border-gray-800">
           {transactions.length} items
         </span>
       </div>
 
       {!transactions.length ? (
-        <div className="p-12 text-center text-gray-500">
-          <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
-            <ListFilter className="w-8 h-8 opacity-50" />
+        <div className="p-16 text-center text-gray-500 flex flex-col items-center">
+          <div className="w-20 h-20 bg-gray-800/50 rounded-full flex items-center justify-center mb-4 border border-gray-700/50">
+            <ListFilter className="w-10 h-10 opacity-30" />
           </div>
-          <p>No transactions found.</p>
+          <h3 className="text-white font-medium mb-1">No transactions found</h3>
+          <p className="text-sm text-gray-500">Try adjusting your filters or date range.</p>
         </div>
       ) : (
         <>
@@ -76,27 +86,33 @@ export default function TransactionList({
             <table className="w-full text-left text-sm">
               <thead className="bg-gray-950/50 text-gray-400 font-medium uppercase text-xs tracking-wider">
                 <tr>
-                  <th className="px-6 py-4">Date</th>
+                  <th className="px-6 py-4 pl-8">Date</th>
                   <th className="px-6 py-4">Description</th>
                   <th className="px-6 py-4">Category</th>
-                  <th className="px-6 py-4 text-right">Amount</th>
+                  <th className="px-6 py-4 text-right pr-8">Amount</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-800">
-                {visibleTransactions.map((t) => (
-                  <tr key={t.id} className="hover:bg-gray-800/50 transition-colors group">
-                    <td className="px-6 py-4 whitespace-nowrap text-gray-400 tabular-nums">
+              <tbody className="divide-y divide-gray-800/50">
+                {visibleTransactions.map((t, index) => (
+                  <motion.tr 
+                    key={t.id} 
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className="hover:bg-gray-800/40 transition-colors group cursor-default"
+                  >
+                    <td className="px-6 py-4 pl-8 whitespace-nowrap text-gray-400 tabular-nums">
                       {formatDate(t.date)}
                     </td>
-                    <td className="px-6 py-4 text-gray-200 font-medium">
+                    <td className="px-6 py-4 text-gray-200 font-medium group-hover:text-white transition-colors">
                       {t.description}
                     </td>
                     <td className="px-6 py-4">
-                      <span className={cn("inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium", getCategoryStyle(t.category))}>
+                      <span className={cn("inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border border-transparent group-hover:border-white/5 transition-all", getCategoryStyle(t.category))}>
                         {t.category}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-right whitespace-nowrap">
+                    <td className="px-6 py-4 pr-8 text-right whitespace-nowrap">
                       <div className={cn("flex items-center justify-end font-bold", t.type === 'income' ? 'text-emerald-400' : 'text-gray-200')}>
                         {t.type === 'income' ? '+' : '-'} {formatCurrency(t.amount)}
                         {t.type === 'income' ? (
@@ -106,7 +122,7 @@ export default function TransactionList({
                         )}
                       </div>
                     </td>
-                  </tr>
+                  </motion.tr>
                 ))}
               </tbody>
             </table>
@@ -114,8 +130,14 @@ export default function TransactionList({
 
           {/* Mobile Card View */}
           <div className="md:hidden divide-y divide-gray-800">
-            {visibleTransactions.map((t) => (
-              <div key={t.id} className="p-4 hover:bg-gray-800/30 active:bg-gray-800/50 transition-colors">
+            {visibleTransactions.map((t, index) => (
+              <motion.div 
+                key={t.id} 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                className="p-4 hover:bg-gray-800/30 active:bg-gray-800/50 transition-colors"
+              >
                 <div className="flex justify-between items-start mb-2">
                   <div>
                     <p className="text-gray-200 font-medium line-clamp-1">{t.description}</p>
@@ -132,7 +154,7 @@ export default function TransactionList({
                     {t.type === 'income' ? '+' : ''}{formatCurrency(t.amount)}
                   </span>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
 
@@ -150,6 +172,6 @@ export default function TransactionList({
           )}
         </>
       )}
-    </div>
+    </motion.div>
   );
 }
