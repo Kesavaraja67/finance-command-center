@@ -1,0 +1,83 @@
+/* Pulse effect for listening state */
+@keyframes voice-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-voice-pulse {
+  animation: voice-pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes voice-pulse-slow {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-voice-pulse-slow {
+  animation: voice-pulse-slow 3s infinite ease-in-out;
+}
+
+/* Glow effect */
+@keyframes voice-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(239, 68, 68, 0.2);
+  }
+}
+
+.animate-voice-glow {
+  animation: voice-glow 1.5s infinite ease-in-out;
+}
+
+/* Transcript appear animation */
+@keyframes transcript-appear {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-transcript-appear {
+  animation: transcript-appear 0.3s ease-out forwards;
+}
+
+/* Processing spinner animation */
+@keyframes voice-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-voice-spin {
+  animation: voice-spin 1s linear infinite;
+}

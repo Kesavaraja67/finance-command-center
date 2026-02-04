@@ -86,41 +86,25 @@ const InteractableBudgetTracker = withInteractable(BudgetTracker, {
 export const components: TamboComponent[] = [
   {
     name: "SpendingChart",
-    description: `Versatile chart for visualizing financial data.
-    - Use 'bar' type for comparing categories side-by-side
-    - Use 'line' type for showing trends over time (dates on x-axis)
-    - Use 'pie' type for showing distribution/breakdown (percentage view)
-    Perfect for questions like "show me spending", "compare categories", "spending trends".
-    ALWAYS provide a descriptive title.`,
+    description: `Chart for financial data. Use 'bar' for categories, 'line' for trends, 'pie' for distribution. IMPORTANT: After showing this chart, give ONE brief sentence only (max 15 words) explaining what the user sees. Do NOT send multiple separate messages.`,
     component: SpendingChart,
     propsSchema: spendingChartSchema,
   },
   {
     name: "BudgetTracker",
-    description: "Shows budget status. Updates when user changes budget limits.",
+    description: "Budget status display. IMPORTANT: After showing this, give ONE brief sentence only (max 15 words). Do NOT send multiple separate messages.",
     component: InteractableBudgetTracker,
     propsSchema: budgetTrackerSchema,
   },
   {
     name: "TransactionList",
-    description: `Displays a list of specific transactions.
-    Use this when looking for:
-    - Recent activity ("What did I buy recently?")
-    - Specific category items ("Show my dining expenses")
-    - Income vs Expense history
-    Shows date, description, category, and amount.`,
+    description: `Transaction list. Use for recent activity or category-specific items. IMPORTANT: After showing this list, give ONE brief sentence only (max 15 words). Do NOT send multiple separate messages.`,
     component: TransactionList,
     propsSchema: transactionListSchema,
   },
   {
     name: "InsightCard",
-    description: `Displays a single, high-impact insight with visual feedback.
-    CRITICAL: When the 'generate_spending_insights' tool returns a list of insights, you MUST render one InsightCard for EACH item in that list.
-    Use for:
-    - Warnings ("You are over budget on X")
-    - Success messages ("You met your savings goal")
-    - Actionable tips ("You could save $X by cutting Y")
-    `,
+    description: `Single insight card. When 'generate_spending_insights' returns multiple insights, render ONE InsightCard for EACH. IMPORTANT: After showing insight(s), give ONE brief sentence only (max 15 words). Do NOT send multiple separate messages.`,
     component: InsightCard,
     propsSchema: insightCardSchema,
   }

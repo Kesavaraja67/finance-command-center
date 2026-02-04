@@ -16,7 +16,7 @@ import {
   CartesianGrid
 } from 'recharts';
 import { PieChart as PieChartIcon, BarChart as BarChartIcon, TrendingUp } from 'lucide-react';
-import { formatCurrency, cn } from '@/lib/utils';
+import { formatCurrency } from '@/lib/utils';
 
 export interface SpendingChartProps {
   title: string;
@@ -29,9 +29,9 @@ export interface SpendingChartProps {
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-gray-800 border border-gray-700 p-2 rounded-lg shadow-xl">
-        <p className="text-gray-400 text-xs mb-1">{label || payload[0].name}</p>
-        <p className="text-white font-bold text-sm">
+      <div className="bg-white border-2 border-[#E8DED2] p-3 rounded-xl shadow-xl">
+        <p className="text-[#7A6152] text-xs mb-1">{label || payload[0].name}</p>
+        <p className="text-[#2D1B0E] font-bold text-sm">
           {formatCurrency(payload[0].value)}
         </p>
       </div>
@@ -39,12 +39,6 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   }
   return null;
 };
-
-import { motion } from 'framer-motion';
-
-// ... (imports remain the same, just adding motion)
-// Note: I cannot see the imports in the replacement chunk, assuming I need to add it or it's already there if I replace the whole file. 
-// Actually I should replace the component implementation to wrap it in motion.div
 
 export default function SpendingChart({ 
   title, 
@@ -54,9 +48,22 @@ export default function SpendingChart({
   height = 300 
 }: SpendingChartProps) {
   
-  const total = data.reduce((sum, item) => sum + item.value, 0);
-  const average = total / (data.length || 1);
-  const highest = Math.max(...data.map(d => d.value), 0);
+  // Validate and sanitize data
+  const validData = React.useMemo(() => {
+    if (!data || !Array.isArray(data) || data.length === 0) {
+      return [];
+    }
+    
+    return data.map(item => ({
+      name: item.name || 'Unknown',
+      value: typeof item.value === 'number' && !isNaN(item.value) ? item.value : 0,
+      color: item.color || '#FF6B35'
+    })).filter(item => item.value > 0); // Only show items with positive values
+  }, [data]);
+
+  const total = validData.reduce((sum, item) => sum + item.value, 0);
+  const average = total / (validData.length || 1);
+  const highest = Math.max(...validData.map(d => d.value), 0);
 
   const getSubtitle = () => {
     if (type === 'bar') return 'Comparison by Category';
@@ -65,83 +72,86 @@ export default function SpendingChart({
   };
 
   const getIcon = () => {
-    if (type === 'bar') return <BarChartIcon className="w-5 h-5 text-emerald-500" />;
-    if (type === 'line') return <TrendingUp className="w-5 h-5 text-blue-500" />;
-    return <PieChartIcon className="w-5 h-5 text-purple-500" />;
+    if (type === 'bar') return <BarChartIcon className="w-5 h-5 text-[#FF6B35]" />;
+    if (type === 'line') return <TrendingUp className="w-5 h-5 text-[#3B82F6]" />;
+    return <PieChartIcon className="w-5 h-5 text-[#22C55E]" />;
   };
 
+  // Show empty state if no valid data
+  if (validData.length === 0) {
+    return (
+      <div className="w-full bg-white border-2 border-[#E8DED2] rounded-3xl p-6 shadow-lg">
+        <h2 className="text-2xl font-bold text-[#2D1B0E] mb-4" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>{title}</h2>
+        <div className="flex items-center justify-center h-64 text-[#9B8477]">
+          <p>No data available to display</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="w-full bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-2xl p-6 shadow-2xl overflow-hidden"
-    >
+    <div className="w-full bg-white border-2 border-[#E8DED2] rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all overflow-hidden">
       {/* Header */}
       <div className="flex justify-between items-start mb-6">
         <div>
-          <h2 className="text-2xl font-bold text-white mb-1">{title}</h2>
-          <p className="text-sm text-gray-400 flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-[#2D1B0E] mb-1" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>{title}</h2>
+          <p className="text-sm text-[#7A6152] flex items-center gap-2">
             {getIcon()}
             {getSubtitle()}
           </p>
         </div>
         {showTotal && (
-          <motion.div 
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-right bg-gray-900/50 p-3 rounded-xl border border-gray-700/50"
-          >
-            <p className="text-xs text-gray-400 uppercase tracking-wider">Total</p>
-            <p className="text-xl font-bold text-emerald-400">{formatCurrency(total)}</p>
-          </motion.div>
+          <div className="text-right bg-gradient-to-br from-[#F0FDF4] to-[#DCFCE7] p-3 rounded-2xl border-2 border-[#22C55E]/20">
+            <p className="text-xs text-[#7A6152] uppercase tracking-wider">Total</p>
+            <p className="text-xl font-bold text-[#22C55E]">{formatCurrency(total)}</p>
+          </div>
         )}
       </div>
 
       {/* Chart Area */}
-      <div style={{ height }} className="w-full relative min-h-[300px]">
+      <div style={{ height: `${height}px` }} className="w-full">
         <ResponsiveContainer width="100%" height="100%">
           {type === 'bar' ? (
-            <BarChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" vertical={false} />
+            <BarChart data={validData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#E8DED2" vertical={false} />
               <XAxis 
                 dataKey="name" 
-                stroke="#9CA3AF" 
+                stroke="#7A6152" 
                 fontSize={12} 
                 tickLine={false} 
                 axisLine={false}
               />
               <YAxis 
-                stroke="#9CA3AF" 
+                stroke="#7A6152" 
                 fontSize={12} 
                 tickFormatter={(value) => `$${value}`} 
                 tickLine={false} 
                 axisLine={false}
               />
-              <Tooltip content={<CustomTooltip />} cursor={{ fill: '#374151', opacity: 0.2 }} />
+              <Tooltip content={<CustomTooltip />} cursor={{ fill: '#FFF4E6', opacity: 0.3 }} />
               <Bar 
                 dataKey="value" 
-                radius={[4, 4, 0, 0]}
-                isAnimationActive={false}
+                radius={[8, 8, 0, 0]}
+                animationDuration={800}
+                animationBegin={0}
               >
-                {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color || '#10B981'} />
+                {validData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
               </Bar>
             </BarChart>
           ) : type === 'line' ? (
-            <LineChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" vertical={false} />
+            <LineChart data={validData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#E8DED2" vertical={false} />
               <XAxis 
                 dataKey="name" 
-                stroke="#9CA3AF" 
+                stroke="#7A6152" 
                 fontSize={12} 
                 tickLine={false} 
                 axisLine={false}
               />
               <YAxis 
-                stroke="#9CA3AF" 
+                stroke="#7A6152" 
                 fontSize={12} 
                 tickFormatter={(value) => `$${value}`} 
                 tickLine={false} 
@@ -153,25 +163,29 @@ export default function SpendingChart({
                 dataKey="value" 
                 stroke="#3B82F6" 
                 strokeWidth={3}
-                dot={{ r: 4, fill: '#3B82F6', strokeWidth: 2, stroke: '#1F2937' }}
+                dot={{ r: 4, fill: '#3B82F6', strokeWidth: 2, stroke: '#FFFFFF' }}
                 activeDot={{ r: 8, fill: '#60A5FA' }}
-                isAnimationActive={false}
+                animationDuration={800}
+                animationBegin={0}
               />
             </LineChart>
           ) : (
             <PieChart>
               <Pie
-                data={data}
+                data={validData}
                 cx="50%"
                 cy="50%"
                 innerRadius={60}
                 outerRadius={100}
                 paddingAngle={5}
                 dataKey="value"
-                isAnimationActive={false}
+                animationDuration={800}
+                animationBegin={0}
+                label={(entry) => `${entry.name}: $${entry.value.toFixed(0)}`}
+                labelLine={{ stroke: '#7A6152' }}
               >
-                {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color || '#10B981'} stroke="rgba(0,0,0,0)" />
+                {validData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} stroke="rgba(0,0,0,0)" />
                 ))}
               </Pie>
               <Tooltip content={<CustomTooltip />} />
@@ -182,21 +196,21 @@ export default function SpendingChart({
 
       {/* Footer Stats */}
       {type !== 'pie' && (
-        <div className="grid grid-cols-3 gap-4 mt-6 pt-4 border-t border-gray-700/50">
+        <div className="grid grid-cols-3 gap-4 mt-6 pt-4 border-t-2 border-[#E8DED2]">
           <div>
-            <p className="text-xs text-gray-500">Average</p>
-            <p className="text-sm font-semibold text-gray-300">{formatCurrency(average)}</p>
+            <p className="text-xs text-[#9B8477]">Average</p>
+            <p className="text-sm font-semibold text-[#5C4534]">{formatCurrency(average)}</p>
           </div>
           <div>
-            <p className="text-xs text-gray-500">Highest</p>
-            <p className="text-sm font-semibold text-gray-300">{formatCurrency(highest)}</p>
+            <p className="text-xs text-[#9B8477]">Highest</p>
+            <p className="text-sm font-semibold text-[#5C4534]">{formatCurrency(highest)}</p>
           </div>
           <div>
-            <p className="text-xs text-gray-500">Items</p>
-            <p className="text-sm font-semibold text-gray-300">{data.length}</p>
+            <p className="text-xs text-[#9B8477]">Items</p>
+            <p className="text-sm font-semibold text-[#5C4534]">{validData.length}</p>
           </div>
         </div>
       )}
-    </motion.div>
+    </div>
   );
 }

@@ -1,9 +1,10 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  /* Tailwind CSS Variables customized with tambo colors */
+  /* Tailwind CSS Variables customized with warm colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -28,79 +29,102 @@
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
 
-  /* Tambo Specific Variables needed for tambo components */
+  /* Tambo Specific Variables */
   --color-container: var(--container);
   --color-backdrop: var(--backdrop);
   --color-muted-backdrop: var(--muted-backdrop);
 }
 
 :root {
-  /* Default Tailwind CSS Variables customized with tambo colors */
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.14 0 285);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.14 0 285);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.14 0 285);
-  --primary: oklch(0.31 0.02 281);
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.54 0.027 261);
-  --secondary-foreground: oklch(1 0 0);
-  --muted: oklch(0.92 0 260);
-  --muted-foreground: oklch(0.73 0.022 260);
-  --accent: oklch(0.97 0 286);
-  --accent-foreground: oklch(0.21 0 286);
-  --destructive: oklch(0.64 0.2 25);
-  --border: oklch(0.93 0 242);
-  --input: oklch(0.92 0 286);
-  --ring: oklch(0.14 0 285);
-  --chart-1: oklch(0.72 0.15 60);
-  --chart-2: oklch(0.62 0.2 6);
-  --chart-3: oklch(0.53 0.2 262);
-  --chart-4: oklch(0.7 0.13 165);
-  --chart-5: oklch(0.62 0.2 313);
+  /* WARM "MORNING COFFEE SHOP" PALETTE */
+  
+  /* Backgrounds - Cream & Warm Whites */
+  --cream-50: #FFFBF5;
+  --cream-100: #FFF8F0;      /* Main background */
+  --cream-200: #FFF4E6;
+  --cream-300: #FFEFD9;
+  --white: #FFFFFF;
+  --warm-white: #FDFCFA;
+  
+  /* Borders - Tan & Beige */
+  --tan-100: #F5EDE4;
+  --tan-200: #E8DED2;        /* Primary border */
+  --tan-300: #D4C4B0;
+  --tan-400: #C0AF9B;
+  
+  /* Text - Brown instead of Gray */
+  --brown-900: #2D1B0E;      /* Primary text */
+  --brown-800: #3E2A1A;
+  --brown-700: #5C4534;      /* Body text */
+  --brown-600: #7A6152;      /* Secondary text */
+  --brown-500: #9B8477;      /* Muted text */
+  --brown-400: #BCA99D;      /* Placeholder */
+  
+  /* Primary - Coral Orange */
+  --orange-500: #FF6B35;     /* PRIMARY BRAND */
+  --orange-600: #F55A24;
+  --orange-400: #FFA276;
+  --orange-50: #FFF4F0;
+  --orange-100: #FFE8DD;
+  
+  /* Success - Fresh Green */
+  --green-500: #22C55E;
+  --green-600: #16A34A;
+  --green-400: #4ADE80;
+  --green-50: #F0FDF4;
+  --green-100: #DCFCE7;
+  
+  /* Warning - Golden Yellow */
+  --yellow-500: #F59E0B;
+  --yellow-600: #D97706;
+  --yellow-400: #FBBF24;
+  --yellow-50: #FFFBEB;
+  --yellow-100: #FEF3C7;
+  
+  /* Danger - Warm Red */
+  --red-500: #EF4444;
+  --red-600: #DC2626;
+  --red-400: #F87171;
+  --red-50: #FEF2F2;
+  --red-100: #FEE2E2;
+  
+  /* Info - Friendly Blue */
+  --blue-500: #3B82F6;
+  --blue-600: #2563EB;
+  --blue-400: #60A5FA;
+  --blue-50: #EFF6FF;
+  --blue-100: #DBEAFE;
 
-  /* Tambo Specific Variables needed for tambo components */
-  --container: oklch(0.98 0 247);
-  --backdrop: oklch(0.25 0.07 252 / 0.25);
-  --muted-backdrop: oklch(0.25 0.07 252 / 0.1);
-  --radius: 0.5rem;
-  --panel-left-width: 500px;
-  --panel-right-width: 500px;
-  --sidebar-width: 3rem;
-}
+  /* Tailwind Compatibility Variables */
+  --background: var(--cream-100);
+  --foreground: var(--brown-900);
+  --card: var(--white);
+  --card-foreground: var(--brown-900);
+  --popover: var(--white);
+  --popover-foreground: var(--brown-900);
+  --primary: var(--orange-500);
+  --primary-foreground: var(--white);
+  --secondary: var(--tan-200);
+  --secondary-foreground: var(--brown-900);
+  --muted: var(--cream-200);
+  --muted-foreground: var(--brown-600);
+  --accent: var(--orange-50);
+  --accent-foreground: var(--orange-600);
+  --destructive: var(--red-500);
+  --border: var(--tan-200);
+  --input: var(--tan-200);
+  --ring: var(--orange-500);
+  --chart-1: var(--orange-500);
+  --chart-2: var(--green-500);
+  --chart-3: var(--blue-500);
+  --chart-4: var(--yellow-500);
+  --chart-5: var(--red-500);
 
-.dark {
-  /* Dark Mode Tailwind CSS Variables customized with tambo colors */
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.72 0.15 60);
-  --chart-2: oklch(0.62 0.2 6);
-  --chart-3: oklch(0.53 0.2 262);
-  --chart-4: oklch(0.7 0.13 165);
-  --chart-5: oklch(0.62 0.2 313);
-
-  /* Tambo Specific Variables needed for tambo components */
-  --container: oklch(0.98 0 247);
-  --backdrop: oklch(0.25 0.07 252 / 0.25);
-  --muted-backdrop: oklch(0.25 0.07 252 / 0.1);
-  --radius: 0.5rem;
+  /* Tambo Variables */
+  --container: var(--white);
+  --backdrop: rgba(45, 27, 14, 0.25);
+  --muted-backdrop: rgba(45, 27, 14, 0.1);
+  --radius: 0.75rem;
   --panel-left-width: 500px;
   --panel-right-width: 500px;
   --sidebar-width: 3rem;
@@ -111,24 +135,130 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
-    font-family: Arial, Helvetica, sans-serif;
+    @apply bg-[#FFF8F0] text-[#2D1B0E];
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
 }
 
-/*
-This is a custom animation for the interactable components.
-It's used to highlight the fields that have been updated.
-You can remove this if you don't want to use it.
-*/
+/* WARM ANIMATIONS */
 
+/* Blob Animation - Organic floating movement */
+@keyframes blob {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+  25% {
+    transform: translate(30px, -50px) scale(1.05);
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+  }
+  50% {
+    transform: translate(-20px, 20px) scale(0.95);
+    border-radius: 50% 60% 30% 60% / 30% 60% 70% 40%;
+  }
+  75% {
+    transform: translate(20px, 30px) scale(1.03);
+    border-radius: 60% 40% 60% 40% / 70% 30% 50% 60%;
+  }
+}
+
+.animate-blob {
+  animation: blob 20s ease-in-out infinite;
+}
+
+/* Sound Wave Animation - For voice button */
+@keyframes sound-wave {
+  0%, 100% {
+    height: 12px;
+  }
+  50% {
+    height: 24px;
+  }
+}
+
+.animate-sound-wave {
+  animation: sound-wave 0.6s ease-in-out infinite;
+}
+
+/* Float Animation - Gentle up/down */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Fade In Up - Entry animation */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.4s ease-out forwards;
+}
+
+/* Fade In - Simple fade */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+/* Typing Dots - For loading state */
+@keyframes typing-dot {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.7;
+  }
+  30% {
+    transform: translateY(-8px);
+    opacity: 1;
+  }
+}
+
+.typing-dot {
+  animation: typing-dot 1.4s ease-in-out infinite;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Flash Animation - For interactables */
 @keyframes flash {
-  0%,
-  100% {
+  0%, 100% {
     background-color: transparent;
   }
   50% {
-    background-color: rgb(59 130 246 / 0.3);
+    background-color: rgba(255, 107, 53, 0.3);
   }
 }
 
@@ -136,9 +266,7 @@ You can remove this if you don't want to use it.
   animation: flash 1s ease-in-out;
 }
 
-/*
-Animated gradient for thinking text, creates a shimmering effect that moves across the text.
-*/
+/* Thinking Gradient - Warm version */
 @keyframes thinking-gradient {
   0% {
     background-position: -200% center;
@@ -149,18 +277,77 @@ Animated gradient for thinking text, creates a shimmering effect that moves acro
 }
 
 .animate-thinking-gradient {
-  /* Fallback */
-  background: linear-gradient(90deg, #666 0%, #bbb 50%, #666 100%);
-  /* Preferred (overrides when supported) */
   background: linear-gradient(
     90deg,
-    oklch(0.14 0 0) 0%,
-    oklch(0.7 0 0) 50%,
-    oklch(0.14 0 0) 100%
+    var(--brown-900) 0%,
+    var(--brown-500) 50%,
+    var(--brown-900) 100%
   );
   background-size: 200% 100%;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: thinking-gradient 2s linear infinite;
+}
+
+/* WARM SCROLLBAR STYLING */
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cream-200);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--tan-300);
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--tan-400);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: var(--brown-500);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--tan-300) var(--cream-200);
+}
+
+/* UTILITY CLASSES */
+
+.shadow-orange {
+  box-shadow: 0 8px 24px -4px rgba(255, 107, 53, 0.3);
+}
+
+.shadow-green {
+  box-shadow: 0 8px 24px -4px rgba(34, 197, 94, 0.3);
+}
+
+.shadow-blue {
+  box-shadow: 0 8px 24px -4px rgba(59, 130, 246, 0.3);
+}
+
+.shadow-red {
+  box-shadow: 0 8px 24px -4px rgba(239, 68, 68, 0.3);
+}
+
+.gradient-orange {
+  background: linear-gradient(135deg, var(--orange-500) 0%, var(--orange-600) 100%);
+}
+
+.gradient-green {
+  background: linear-gradient(135deg, var(--green-500) 0%, var(--green-400) 100%);
+}
+
+.gradient-warm-bg {
+  background: linear-gradient(135deg, var(--cream-100) 0%, var(--cream-300) 100%);
 }
